@@ -1,39 +1,21 @@
-import 'package:sqflite/sqlite_api.dart';
-
-import './../database/app_database.dart';
+import './product_remote_repository.dart';
 import './../models/models.dart';
+import './repository.dart';
 
-class RatingLocalRepository {
-  Future<void> saveOrUpdateRating(int userId, int productId, RatingModel rating) async {
-    final db = await AppDatabase().database;
-    await db.insert(
-      'rating',
-      {
-        'userId': userId,
-        'productId': productId,
-        'rate': rating.rate,
-        'count': rating.count,
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+class ProductRepository {
+  final ProductRemoteRepository remoteRepository;
+
+  ProductRepository(this.remoteRepository);
+
+  Future<List<ProductModel>> fetchProducts() async {
+    return await remoteRepository.fetchProducts();
   }
 
-  Future<RatingModel?> getRatingByUserAndProduct(int userId, int productId) async {
-    final db = await AppDatabase().database;
-    final maps = await db.query(
-      'rating',
-      where: 'userId = ? AND productId = ?',
-      whereArgs: [userId, productId],
-    );
+  Future<List<ProductModel>> fetchProductsByCategory(String category) async {
+    return await remoteRepository.fetchProductsByCategory(category);
+  }
 
-    if (maps.isNotEmpty) {
-      final map = maps.first;
-      return RatingModel(
-        rate: map['rate'] as double,
-        count: map['count'] as int,
-      );
-    }
-
-    return null;
+  Future<ProductModel> fetchProductById(int id) async {
+    return await remoteRepository.fetchProductById(id);
   }
 }

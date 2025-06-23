@@ -1,5 +1,6 @@
 import './../models/rating_model.dart';
 import './repository.dart';
+import './rating_local_repository.dart';
 
 class RatingRepository {
   final RatingLocalRepository localRepository;

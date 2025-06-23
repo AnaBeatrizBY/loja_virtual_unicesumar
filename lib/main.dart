@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import './widgets/widgets.dart';
 import './views/views.dart';
 import 'bindings/initial_binding.dart';
+import 'views/splash.dart';
 
 Future<void> main() async {
   // Registrar os services globais
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
           elevation: 6,
           shape: StadiumBorder(),
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           color: Colors.white,
           elevation: 6,
           margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -75,20 +75,18 @@ class MyApp extends StatelessWidget {
         ),
       ),
 
-      // 👉 TIRA ISSO:
-      // home: MainNavigationPage(),
-
-      initialRoute: '/',
+      initialRoute: '/splash',
+      initialBinding: InitialBinding(), // ✅ AQUI
       getPages: [
         GetPage(
-          name: '/',
-          page: () => const MainNavigationPage(),
-          binding: InitialBinding(),
+          name: '/splash',
+          page: () => const SplashPage(),
         ),
         GetPage(name: '/cart', page: () => CartPage()),
         GetPage(name: '/category/:category', page: () => CategoryPage()),
         GetPage(name: '/signup', page: () => const SignUpPage()),
         GetPage(name: '/login', page: () => const LoginPage()),
+        GetPage(name: '/splash', page: () => const SplashPage()),
       ],
     );
   }
